@@ -4,18 +4,18 @@ import { COLOR_PRIMARY, COLOR_SECONDARY } from '../../../utils/constants'
 import { Clock, Rating } from '../../../assets';
 import Line from '../../Line';
 
-const TitleBox = () => {
+const TitleBox = ({title, runtime, voteAverage}) => {
   return (
     <View style={styles.titleBox}>
-        <Text style={styles.title}>Star Wars: The Last Jedi</Text>
+        <Text style={styles.title}>{title}</Text>
         <View style={styles.titleBoxDetail}>
             <View style={{...styles.textIcon, marginRight: 30}}>
               <Clock />
-              <Text style={styles.label}> 152 Minutes </Text>
+              <Text style={styles.label}> {runtime} Minutes </Text>
             </View>
             <View style={styles.textIcon}>
               <Rating />
-              <Text style={styles.label}> 7.0 (IMDB) </Text>
+              <Text style={styles.label}> {voteAverage} (IMDB) </Text>
             </View>
         </View>
         <Line />

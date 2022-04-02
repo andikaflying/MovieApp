@@ -26,7 +26,6 @@ export async function getUserData() {
 export async function removeUserData() {
   try {
       await AsyncStorage.removeItem('UserData');
-      console.log('Data removed')
   }
   catch(exception) {
       console.log(exception)

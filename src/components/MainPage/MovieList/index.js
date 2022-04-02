@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, Dimensions, Image, TouchableHighlight } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, Image, TouchableHighlight, ScrollView } from 'react-native'
 import React from 'react'
 
 const MovieList = ({data, goToDetail}) => {
 
-  const renderItem = (item) => {
+  const renderItem = (item, index) => {
     return (
-      <View style={styles.item}  key={item.id}>
+      <View style={[styles.item, {marginRight: (index % 2 == 0) ? 20 : 0}]}  key={item.id}>
         <TouchableHighlight style={styles.itemContainer} onPress={() => goToDetail(item.id)} >
           <View>
             <Image
@@ -21,12 +21,16 @@ const MovieList = ({data, goToDetail}) => {
 
   return(
     <View style={styles.container}>
-      <Text style={styles.header}>Movie List</Text>
-      <View style={styles.gridContainer}>
-        {(data != null) && data.map(item => {
-          return renderItem(item);
-        })}
-      </View>
+        <ScrollView style={styles.scrollView}>
+          <View style={{paddingBottom: 50}}>
+            <Text style={styles.header}>Movie List</Text>
+            <View style={styles.gridContainer}>
+              {(data != null) && data.map((item, index) => {
+                return renderItem(item, index);
+              })}
+            </View>
+          </View>
+        </ScrollView>
     </View>
   );
 };
@@ -40,24 +44,27 @@ const styles = StyleSheet.create({
     container: {
       marginTop: 40,
       marginHorizontal: 18,
+      flex: 2,
     }, 
     gridContainer: {
       flex: 1,
       flexDirection: 'row',
       flexWrap: 'wrap',
-      alignItems: 'flex-start' // if you want to fill rows left to right
+      alignItems: 'flex-start', // if you want to fill rows left to right
     },
     header: {
       fontSize: 24,
       color: 'white',
       fontFamily: 'Lato-Regular',
-      marginBottom: 23,
+      marginBottom: 16,
+    },
+    scrollView: {
+
     },
     item: {
       width: "45%",
-      height: windowHeight * 0.22,
-      marginRight: 10,
-      marginBottom: 55,
+      height: windowHeight * 0.35,
+      
     },
     imageThumbnail: {
       height: 150,

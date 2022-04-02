@@ -10,8 +10,6 @@ import { removeUserData } from '../../actions/authorization';
 
 const MainPage = props => {
   const reducers = useSelector(state => state);
-  const loginReducer = useSelector(state => state.loginReducer);
-  const name = useSelector(state => state.loginReducer.name);
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -53,7 +51,6 @@ const MainPage = props => {
           <Text style={styles.name}>Hi, {reducers.loginReducer.name} !</Text>
           <Text style={styles.logout} onPress={logout}>Logout</Text>
         </View>
-        {console.log("Reducers : " + JSON.stringify(reducers))}
         {reducers.moviesReducer.recommendedMovies.length > 0 && <TrendingList data={reducers.moviesReducer.recommendedMovies} />}
         {reducers.moviesReducer.data.length > 0 && <MovieList data={reducers.moviesReducer.data} goToDetail={goToDetail} />}
       </View>
@@ -70,7 +67,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     color: COLOR_PRIMARY,
-    fontFamily: 'Lato-Regular'
+    fontFamily: 'Lato-Bold'
   },
   logout: {
     fontSize: 16,
@@ -84,5 +81,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     alignItems: 'flex-end',
     justifyContent: 'space-between'
+  },
+  trendingContainer: {
+    flex: 1,
   }
 })

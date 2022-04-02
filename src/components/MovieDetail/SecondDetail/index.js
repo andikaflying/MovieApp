@@ -3,15 +3,17 @@ import React from 'react'
 import { COLOR_PRIMARY, COLOR_SECONDARY } from '../../../utils/constants'
 import SeeMore from 'react-native-see-more-inline';
 
-const SecondDetail = () => {
+const SecondDetail = ({overview}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Synopsis</Text>
-      <SeeMore 
-        style={styles.paragraph}
-        numberOfLines={2}>
-            Rey (Daisy Ridley) finally manages to find the legendary Jedi knight, Luke Skywalker (Mark Hamill) on an island with a magical aura. The heroes of The Force Awakens including Leia, Finn
-      </SeeMore>
+      {overview != null && 
+        <SeeMore 
+          style={styles.paragraph}
+          numberOfLines={2}>
+            {overview}
+        </SeeMore>
+      }
     </View>
   )
 }

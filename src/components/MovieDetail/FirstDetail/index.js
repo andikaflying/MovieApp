@@ -3,33 +3,27 @@ import React from 'react'
 import { COLOR_PRIMARY, COLOR_SECONDARY } from '../../../utils/constants'
 import Line from '../../Line'
 
-const FirstDetail = () => {
+const FirstDetail = ({releaseDate, genres}) => {
   return (
     <View style={styles.container}>
         <View style={styles.firstDetail}>
             <View style={styles.release}>
                 <Text style={styles.releaseLabel}>Release date</Text>
-                <Text style={styles.releaseDate}>December 9, 2017</Text>
+                <Text style={styles.releaseDate}>{releaseDate}</Text>
             </View>
             <View style={styles.genre}>
                 <Text style={styles.genreLabel} >Genre</Text>
                 <View style={styles.genreList}>
-                    <TouchableOpacity
-                        style={styles.genreButton}>
-                        <Text style={styles.genreButtonText}>Action</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.genreButton}>
-                        <Text style={styles.genreButtonText}>Horror</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.genreButton}>
-                        <Text style={styles.genreButtonText}>Action</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.genreButton}>
-                        <Text style={styles.genreButtonText}>Horror</Text>
-                    </TouchableOpacity>
+                    { (genres != null) && genres.map((item, index) => {
+                            console.log("Index = " + index)
+                            return (
+                                <TouchableOpacity
+                                    style={styles.genreButton(index)}>
+                                    <Text style={styles.genreButtonText}>{item.name}</Text>
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
                 </View>
             </View>
         </View>
@@ -66,24 +60,24 @@ const styles = StyleSheet.create({
         fontFamily: 'Lato-Bold',
     },
     genre: {
-        flex: 1,
+        flex: 2,
     },
     genreList: {
         flexDirection: 'row',
         marginTop: 8,
         flexWrap: "wrap"
     },
-    genreButton: {
-        width: 70,
-        height: 30,
+    genreButton: (index) => ({
+        width: 80,
+        height: 40,
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 0,
+        padding:0,
         borderRadius: 30,
         backgroundColor: 'rgba(250, 240, 202, 0.05)',
-        marginRight: 12,
+        marginRight: (index % 2 == 0) ? 10 : 0,
         marginBottom: 10,
-    },
+    }),
     genreButtonText: {
         color: COLOR_SECONDARY,
         fontFamily: 'Lato-Regular',

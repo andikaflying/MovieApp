@@ -1,15 +1,20 @@
-import { StyleSheet, Text, View, Dimensions, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, ScrollView } from 'react-native'
 import React, { useEffect } from 'react'
 import YoutubePlayer from 'react-native-youtube-iframe';
 import { COLOR_PRIMARY, COLOR_SECONDARY, COLOR_LINE } from '../../utils/constants';
 import { TitleBox, FirstDetail, SecondDetail } from '../../components';
 import { ENDPOINT_MOVIES_LIST } from '../../utils/constants';
+import { DISPLAY_DETAIL_MOVIE_SUCCESS, DISPLAY_DETAIL_MOVIE_FAILURE } from '../../reducer/MoviesReducer';
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux';
 
 const MovieDetail = props => {
+  const detailMovie = useSelector(state => state.moviesReducer.detailMovie);
+  const dispatch = useDispatch();
   const { itemId } = props.route.params;
 
   useEffect(() => {
+    console.log("1995 movie detail - useEffect called");
     getDetailMovie(itemId);
   }, [itemId]);
 
@@ -17,23 +22,45 @@ const MovieDetail = props => {
     axios
       .get(ENDPOINT_MOVIES_LIST + itemId)
       .then(function (response) {
-        //Action
-        console.log("Response data movie detail : " + JSON.stringify(response.data))
+        dispatch({
+          type: DISPLAY_DETAIL_MOVIE_SUCCESS,
+          payload: response.data,
+        });
       });
   }
 
   return (
     <View style={styles.container}>
-      <YoutubePlayer
-        height={250}
-        play={false}
-        videoId={'KLUwtu5A-rE'}
-      />
-      <View style={styles.detail}>
-        <TitleBox />
-        <FirstDetail />
-        <SecondDetail />
-      </View>
+      
+      {detailMovie != null && 
+          <View style={styles.box}>
+            <YoutubePlayer
+              height={225}
+              play={false}
+              videoId={'KLUwtu5A-rE'}
+            />
+            <View style={styles.detail}>
+              <ScrollView style={styles.scrollView}>
+                <View>
+                  {console.log("Detail movie 1990 = " + JSON.stringify(detailMovie))}
+                  {console.log("Title 1990 = " + JSON.stringify(detailMovie.title))}
+                  <TitleBox 
+                    title={detailMovie.title}
+                    runtime={detailMovie.runtime}
+                    voteAverage={detailMovie.vote_average}
+                  />
+                  <FirstDetail 
+                    releaseDate={detailMovie.release_date}
+                    genres={detailMovie.genres}
+                  />
+                  <SecondDetail
+                    overview={detailMovie.overview}
+                  />
+                </View>
+              </ScrollView>
+            </View>
+          </View>
+      }
     </View>
   )
 }
@@ -47,6 +74,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  box: {
+    flex: 1
+  },
   image: {
     width: windowWidth,
     height: windowHeight * 0.4,
@@ -55,6 +85,7 @@ const styles = StyleSheet.create({
     color: COLOR_PRIMARY
   },
   detail: {
-    marginHorizontal: 25
+    marginHorizontal: 25,
+    flex: 1,
   },
 })
