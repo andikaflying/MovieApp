@@ -11,6 +11,8 @@ export const DISPLAY_RECOMMENDED_MOVIES_SUCCESS = 'Display Recommended Movies Su
 export const DISPLAY_RECOMMENDED_MOVIES_FAILURE = 'Display Recommended Movies Failure';
 export const DISPLAY_DETAIL_MOVIE_SUCCESS = 'Display Detail Movie Success';
 export const DISPLAY_DETAIL_MOVIE_FAILURE = 'Display Detail Movie Failure';
+export const DISPLAY_ALL_MOVIES_SUCCESS = 'Display All Movies Success';
+export const DISPLAY_ALL_MOVIES_FAILURE = 'Display All Movies Failure';
 
 //Reducer
 const moviesReducer = (state = initialState, action) => {
@@ -19,10 +21,21 @@ const moviesReducer = (state = initialState, action) => {
         return {
           ...state,
           recommendedMovies: action.payload,
-          data: action.payload
         };
       }
       case DISPLAY_RECOMMENDED_MOVIES_FAILURE: {
+        return {
+          ...state,
+          error: action.error
+        };
+      }
+      case DISPLAY_ALL_MOVIES_SUCCESS: {
+        return {
+          ...state,
+          data: action.payload,
+        };
+      }
+      case DISPLAY_ALL_MOVIES_FAILURE: {
         return {
           ...state,
           error: action.error

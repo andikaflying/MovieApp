@@ -4,9 +4,10 @@ import { TrendingList, MovieList } from '../../components'
 import axios from 'axios'
 import { ENDPOINT_MOVIES_LIST, COLOR_PRIMARY } from '../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { DISPLAY_RECOMMENDED_MOVIES_SUCCESS } from '../../reducer/MoviesReducer';
+import { DISPLAY_RECOMMENDED_MOVIES_SUCCESS, DISPLAY_ALL_MOVIES_SUCCESS } from '../../reducer/MoviesReducer';
 import { LOGOUT } from '../../reducer/LoginReducer';
 import { removeUserData } from '../../actions/authorization';
+import { cloneDeep, groupBy } from 'lodash';
 
 const MainPage = props => {
   const reducers = useSelector(state => state);
@@ -14,16 +15,39 @@ const MainPage = props => {
   const [isLoading, setIsLoading] = useState(false);
 
   const displayRecommendedMovies = () => {
-    axios
-      .get(ENDPOINT_MOVIES_LIST)
-      .then(function (response) {
-        //Action
-        dispatch({
-          type: DISPLAY_RECOMMENDED_MOVIES_SUCCESS,
-          payload: response.data.results,
-        });
-      });
+    dispatch(asyncGetMovies());
   };
+
+  const sortByPopularity = (a, b) => a.popularity < b.popularity ? 1 : -1
+
+  const sortByReleaseDate = (a, b) => new Date(a.release_date).getTime() < new Date(b.release_date).getTime() ? 1 : -1
+
+  function asyncGetMovies() {
+    return async dispatching => {
+      // async ajax sample using fetch
+      await axios
+        .get(ENDPOINT_MOVIES_LIST)
+        .then(function (response) {
+          var allData = response.data.results;
+          // var popularData = JSON.parse(JSON.stringify(allData.sort(sortByPopularity)));
+          // var latestData = JSON.parse(JSON.stringify(allData.sort(sortByReleaseDate)));
+          var popularData = cloneDeep(allData.sort(sortByPopularity));
+          var latestData = cloneDeep(allData.sort(sortByReleaseDate));
+
+          console.log("asyncGetMovies - Latest data = " + JSON.stringify(latestData));
+          console.log("asyncGetMovies - Popular data = " + JSON.stringify(popularData));
+          //Action
+          dispatching({
+            type: DISPLAY_RECOMMENDED_MOVIES_SUCCESS,
+            payload: popularData
+          });
+          dispatching({
+              type: DISPLAY_ALL_MOVIES_SUCCESS,
+              payload: latestData
+           });
+        });
+    };
+  }
 
   useEffect(() => {
     displayRecommendedMovies();
@@ -51,7 +75,8 @@ const MainPage = props => {
           <Text style={styles.name}>Hi, {reducers.loginReducer.name} !</Text>
           <Text style={styles.logout} onPress={logout}>Logout</Text>
         </View>
-        {reducers.moviesReducer.recommendedMovies.length > 0 && <TrendingList data={reducers.moviesReducer.recommendedMovies} />}
+        {console.log("001 - Movie reducer = " + JSON.stringify(reducers.moviesReducer))}
+        {reducers.moviesReducer.recommendedMovies.length > 0 && <TrendingList data={reducers.moviesReducer.recommendedMovies} goToDetail={goToDetail} />}
         {reducers.moviesReducer.data.length > 0 && <MovieList data={reducers.moviesReducer.data} goToDetail={goToDetail} />}
       </View>
     </View>

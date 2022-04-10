@@ -12,15 +12,14 @@ import { COLOR_PRIMARY } from '../../../utils/constants';
 import HorizontalListItem from '../../HorizontalListItem';
 import HorizontalList from '../../HorizontalList';
 
-const TrendingList = ({data}) => {
-  const [selectedId, setSelectedId] = useState(null);
+const TrendingList = ({data, goToDetail}) => {
 
   const renderItem = ({item}) => {
     return (
       <HorizontalListItem
         image={item.poster_path}
         name={item.title}
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => goToDetail(item.id)}
       />
     );
   };
@@ -33,7 +32,6 @@ const TrendingList = ({data}) => {
           data={data}
           renderItem={renderItem}
           keyExtractor={item => item.id}
-          extraData={selectedId}
         />
       </View>
     </View>
