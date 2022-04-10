@@ -28,14 +28,12 @@ const MainPage = props => {
       await axios
         .get(ENDPOINT_MOVIES_LIST)
         .then(function (response) {
-          var allData = response.data.results;
-          // var popularData = JSON.parse(JSON.stringify(allData.sort(sortByPopularity)));
-          // var latestData = JSON.parse(JSON.stringify(allData.sort(sortByReleaseDate)));
-          var popularData = cloneDeep(allData.sort(sortByPopularity));
-          var latestData = cloneDeep(allData.sort(sortByReleaseDate));
-
-          console.log("asyncGetMovies - Latest data = " + JSON.stringify(latestData));
-          console.log("asyncGetMovies - Popular data = " + JSON.stringify(popularData));
+          const allData = response.data.results;
+          const popularData = cloneDeep(allData);
+          const latestData = cloneDeep(allData);
+          popularData.sort(sortByPopularity);
+          latestData.sort(sortByReleaseDate);
+          
           //Action
           dispatching({
             type: DISPLAY_RECOMMENDED_MOVIES_SUCCESS,
