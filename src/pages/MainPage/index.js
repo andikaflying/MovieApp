@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DISPLAY_RECOMMENDED_MOVIES_SUCCESS, DISPLAY_ALL_MOVIES_SUCCESS } from '../../reducer/MoviesReducer';
 import { LOGOUT } from '../../reducer/LoginReducer';
 import { removeUserData } from '../../actions/authorization';
-import { cloneDeep, groupBy } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 const MainPage = props => {
   const reducers = useSelector(state => state);
@@ -33,7 +33,7 @@ const MainPage = props => {
           const latestData = cloneDeep(allData);
           popularData.sort(sortByPopularity);
           latestData.sort(sortByReleaseDate);
-          
+
           //Action
           dispatching({
             type: DISPLAY_RECOMMENDED_MOVIES_SUCCESS,
