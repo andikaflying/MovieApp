@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
 import React, { useState, useEffect, useReducer } from 'react'
 import { TrendingList, MovieList } from '../../components'
 import axios from 'axios'
-import { ENDPOINT_MOVIES_LIST, COLOR_PRIMARY } from '../../utils/constants';
+import { ENDPOINT_MOVIES_LIST, COLOR_PRIMARY, COLOR_SECONDARY } from '../../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { DISPLAY_RECOMMENDED_MOVIES_SUCCESS, DISPLAY_ALL_MOVIES_SUCCESS } from '../../reducer/MoviesReducer';
 import { LOGOUT } from '../../reducer/LoginReducer';
@@ -66,14 +66,20 @@ const MainPage = props => {
     props.navigation.navigate('Login');
   }
 
+  const goToBooksPage = () => {
+    props.navigation.navigate('Books');
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.trendingContainer}>
         <View style={styles.topView}>
           <Text style={styles.name}>Hi, {reducers.loginReducer.name} !</Text>
+          <Pressable style={styles.button} onPress={goToBooksPage}>
+            <Text style={styles.buttonText}>Books</Text>
+          </Pressable>
           <Text style={styles.logout} onPress={logout}>Logout</Text>
         </View>
-        {console.log("001 - Movie reducer = " + JSON.stringify(reducers.moviesReducer))}
         {reducers.moviesReducer.recommendedMovies.length > 0 && <TrendingList data={reducers.moviesReducer.recommendedMovies} goToDetail={goToDetail} />}
         {reducers.moviesReducer.data.length > 0 && <MovieList data={reducers.moviesReducer.data} goToDetail={goToDetail} />}
       </View>
@@ -107,5 +113,12 @@ const styles = StyleSheet.create({
   },
   trendingContainer: {
     flex: 1,
+  },
+  button: {
+    backgroundColor: COLOR_SECONDARY,
+    width: 80,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
   }
 })

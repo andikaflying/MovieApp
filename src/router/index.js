@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Splash, MainPage, MovieDetail, Login } from '../pages';
+import { Splash, MainPage, MovieDetail, Login, Books } from '../pages';
 import { COLOR_BACKGROUND } from '../utils/constants';
 
 const Stack = createNativeStackNavigator();
@@ -17,6 +17,7 @@ const Router = () => {
         <Stack.Screen name="MainPage" component={MainPage} options={{headerShown : false}} />
         <Stack.Screen name="MovieDetail" component={MovieDetail} options={{headerShown : false}} />
         <Stack.Screen name="Login" component={Login} options={{headerShown : false}} />
+        <Stack.Screen name="Books" component={Books} options={{headerShown : false}} />
     </Stack.Navigator>
   );
 };

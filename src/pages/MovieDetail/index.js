@@ -14,7 +14,6 @@ const MovieDetail = props => {
   const { itemId } = props.route.params;
 
   useEffect(() => {
-    console.log("1995 movie detail - useEffect called");
     getDetailMovie(itemId);
   }, [itemId]);
 
