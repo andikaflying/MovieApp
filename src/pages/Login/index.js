@@ -45,7 +45,11 @@ const Login = ({navigation }) => {
         storeUserData(data);
 
         navigation.replace('MainPage');
-      });
+      }).catch(
+        function (error) {
+          console.log('Message :' + error.message);
+        }
+      )
   }
 
   return (
